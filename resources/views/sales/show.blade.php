@@ -255,6 +255,46 @@
 
             </div>
 
+            @if ($sale->fe_status === 'aceptada')
+
+                <form action="{{ route('sales.electronic-invoice.email', $sale) }}"
+                      method="POST"
+                      class="mt-3">
+
+                    @csrf
+
+                    <label class="form-label fw-bold">
+
+                        Enviar factura por correo
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               value="{{ old('email', $sale->client->email) }}"
+                               required>
+
+                        <button class="btn btn-outline-primary">
+
+                            Enviar
+
+                        </button>
+
+                    </div>
+
+                    <small class="text-muted">
+
+                        Por defecto va al correo del cliente; puede escribir otro.
+
+                    </small>
+
+                </form>
+
+            @endif
+
             @if ($sale->fe_status !== 'aceptada' && $sale->status !== 'Cancelada')
 
                 <form action="{{ route('sales.electronic-invoice', $sale) }}"

@@ -238,6 +238,11 @@ Route::middleware('auth')->group(function () {
         [SaleController::class, 'sendElectronicInvoice']
     )->name('sales.electronic-invoice');
 
+    Route::post(
+        '/sales/{sale}/electronic-invoice/email',
+        [SaleController::class, 'emailElectronicInvoice']
+    )->name('sales.electronic-invoice.email');
+
     /*
     |--------------------------------------------------------------------------
     | EXPORTAR EXCEL

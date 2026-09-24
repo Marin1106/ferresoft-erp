@@ -96,6 +96,47 @@ class ElectronicInvoiceService
 
     /*
     |--------------------------------------------------------------------------
+    | REENVIAR CORREO DE UNA FACTURA ACEPTADA
+    |--------------------------------------------------------------------------
+    */
+
+    public function sendEmail(Sale $sale, ?string $email = null): array
+    {
+        if ($sale->fe_status !== self::STATUS_ACCEPTED || ! $sale->fe_cufe) {
+
+            return $this->result(false, 'Solo se puede enviar por correo una factura aceptada por la DIAN.');
+
+        }
+
+        $email = $email ?: $sale->client->email;
+
+        try {
+
+            $response = $this->client->post('documents/sendmail/' . $sale->fe_cufe, [
+                'email_to' => $email,
+            ]);
+
+        } catch (Throwable $e) {
+
+            Logger::error('MATIAS API: error enviando correo venta #' . $sale->id, ['exception' => $e]);
+
+            return $this->result(false, 'No se pudo enviar el correo: ' . $e->getMessage());
+
+        }
+
+        if (! $response->successful()) {
+
+            return $this->result(false, 'No se pudo enviar el correo: ' . ($response->json('message') ?? 'HTTP ' . $response->status()));
+
+        }
+
+        $this->log($sale, 'FACTURA ELECTRÓNICA CORREO', 'Enviada a ' . $email);
+
+        return $this->result(true, 'Factura ' . $sale->fe_full_number . ' enviada a ' . $email . '.');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | CONSECUTIVO DE LA RESOLUCIÓN
     |--------------------------------------------------------------------------
     | Un número rechazado por la DIAN no se consume, por eso un reintento

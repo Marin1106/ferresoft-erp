@@ -343,6 +343,27 @@ class SaleController extends Controller
 
     /*
     |--------------------------------------------------------------------------
+    | ENVIAR FACTURA ELECTRÓNICA POR CORREO
+    |--------------------------------------------------------------------------
+    */
+
+    public function emailElectronicInvoice(Request $request, Sale $sale, ElectronicInvoiceService $electronicInvoice)
+    {
+        $request->validate([
+
+            'email' => 'nullable|email|max:255',
+
+        ]);
+
+        $sale->load('client');
+
+        $fe = $electronicInvoice->sendEmail($sale, $request->input('email'));
+
+        return back()->with($fe['ok'] ? 'success' : 'error', $fe['message']);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | MOSTRAR VENTA
     |--------------------------------------------------------------------------
     */

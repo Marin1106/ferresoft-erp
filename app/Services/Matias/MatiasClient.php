@@ -16,27 +16,28 @@ class MatiasClient
     |--------------------------------------------------------------------------
     | POST AUTENTICADO
     |--------------------------------------------------------------------------
-    | Si el token obtenido por login expiró (401), se renueva una vez.
+    | Si el token es rechazado (401) y hay email/password, se hace login
+    | de nuevo y se reintenta una vez.
     */
 
     public function post(string $path, array $data): Response
     {
-        $response = $this->request()->post($this->url($path), $data);
+        $response = $this->request($this->token())->post($this->url($path), $data);
 
-        if ($response->status() === 401 && ! config('matias.token')) {
+        if ($response->status() === 401 && $this->hasLoginCredentials()) {
 
             Cache::forget(self::TOKEN_CACHE_KEY);
 
-            $response = $this->request()->post($this->url($path), $data);
+            $response = $this->request($this->loginToken())->post($this->url($path), $data);
 
         }
 
         return $response;
     }
 
-    private function request()
+    private function request(string $token)
     {
-        return Http::withToken($this->token())
+        return Http::withToken($token)
             ->acceptJson()
             ->asJson()
             ->timeout(config('matias.timeout'));
@@ -61,13 +62,23 @@ class MatiasClient
 
         }
 
+        return $this->loginToken();
+    }
+
+    private function hasLoginCredentials(): bool
+    {
+        return filled(config('matias.email')) && filled(config('matias.password'));
+    }
+
+    private function loginToken(): string
+    {
         if ($token = Cache::get(self::TOKEN_CACHE_KEY)) {
 
             return $token;
 
         }
 
-        if (! config('matias.email') || ! config('matias.password')) {
+        if (! $this->hasLoginCredentials()) {
 
             throw new RuntimeException(
                 'Configure MATIAS_TOKEN o MATIAS_EMAIL / MATIAS_PASSWORD en el .env'
