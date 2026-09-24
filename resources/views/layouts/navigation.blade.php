@@ -3,10 +3,11 @@
     <div class="container-fluid">
 
         <!-- LOGO -->
-        <a class="navbar-brand fw-bold text-primary"
-           href="{{ route('dashboard') }}">
+        <a class="navbar-brand fw-bold"
+           href="{{ route('dashboard') }}"
+           style="font-size: 28px; color: #111827;">
 
-            🏪 FerreSoft ERP
+            🛠️ FerreSoft
 
         </a>
 
@@ -66,6 +67,19 @@
 
                 </li>
 
+                <!-- PROVEEDORES -->
+                <li class="nav-item">
+
+                    <a class="nav-link
+                        {{ request()->routeIs('suppliers.*') ? 'active fw-bold text-primary' : '' }}"
+                       href="{{ route('suppliers.index') }}">
+
+                        🚚 Proveedores
+
+                    </a>
+
+                </li>
+
                 <!-- FACTURACIÓN -->
                 <li class="nav-item">
 
@@ -87,6 +101,19 @@
                        href="{{ route('reports.index') }}">
 
                         📈 Reportes
+
+                    </a>
+
+                </li>
+
+                <!-- KARDEX -->
+                <li class="nav-item">
+
+                    <a class="nav-link
+                        {{ request()->routeIs('kardex.*') ? 'active fw-bold text-primary' : '' }}"
+                       href="{{ route('kardex.index') }}">
+
+                        📋 Kardex
 
                     </a>
 
@@ -196,7 +223,11 @@
 
                             </li>
 
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+
+                                <hr class="dropdown-divider">
+
+                            </li>
 
                             <li>
 
@@ -205,7 +236,8 @@
 
                                     @csrf
 
-                                    <button class="dropdown-item text-danger">
+                                    <button type="submit"
+                                            class="dropdown-item text-danger">
 
                                         🚪 Cerrar sesión
 

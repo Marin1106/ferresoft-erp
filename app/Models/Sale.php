@@ -22,9 +22,35 @@ class Sale extends Model
         'iva',
         'total',
         'payment_method',
-        'status'
+        'status',
+        'fe_status',
+        'fe_prefix',
+        'fe_number',
+        'fe_cufe',
+        'fe_message',
+        'fe_response',
+        'fe_sent_at'
 
     ];
+
+    protected $casts = [
+
+        'fe_sent_at' => 'datetime',
+
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | NÚMERO FACTURA ELECTRÓNICA (PREFIJO + CONSECUTIVO)
+    |--------------------------------------------------------------------------
+    */
+
+    public function getFeFullNumberAttribute()
+    {
+        return $this->fe_number
+            ? $this->fe_prefix . $this->fe_number
+            : null;
+    }
 
     /*
     |--------------------------------------------------------------------------

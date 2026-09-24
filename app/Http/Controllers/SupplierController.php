@@ -9,13 +9,14 @@ class SupplierController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | INDEX
+    | LISTAR PROVEEDORES
     |--------------------------------------------------------------------------
     */
 
     public function index()
     {
-        $suppliers = Supplier::latest()->paginate(10);
+        $suppliers = Supplier::latest()
+            ->paginate(10);
 
         return view(
             'suppliers.index',
@@ -25,7 +26,7 @@ class SupplierController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | CREATE
+    | FORMULARIO CREAR
     |--------------------------------------------------------------------------
     */
 
@@ -36,22 +37,53 @@ class SupplierController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | STORE
+    | GUARDAR PROVEEDOR
     |--------------------------------------------------------------------------
     */
 
     public function store(Request $request)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDACIONES
+        |--------------------------------------------------------------------------
+        */
+
         $request->validate([
 
-            'name' => 'required',
-            'phone' => 'nullable',
-            'email' => 'nullable|email',
-            'address' => 'nullable',
+            'name' => 'required|string|max:255',
+
+            'phone' => 'nullable|string|max:255',
+
+            'email' => 'nullable|email|max:255',
+
+            'address' => 'nullable|string',
 
         ]);
 
-        Supplier::create($request->all());
+        /*
+        |--------------------------------------------------------------------------
+        | CREAR PROVEEDOR
+        |--------------------------------------------------------------------------
+        */
+
+        Supplier::create([
+
+            'name' => $request->name,
+
+            'phone' => $request->phone,
+
+            'email' => $request->email,
+
+            'address' => $request->address,
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | REDIRECCIONAR
+        |--------------------------------------------------------------------------
+        */
 
         return redirect()
             ->route('suppliers.index')
@@ -63,7 +95,7 @@ class SupplierController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EDIT
+    | FORMULARIO EDITAR
     |--------------------------------------------------------------------------
     */
 
@@ -77,7 +109,7 @@ class SupplierController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | UPDATE
+    | ACTUALIZAR PROVEEDOR
     |--------------------------------------------------------------------------
     */
 
@@ -86,38 +118,83 @@ class SupplierController extends Controller
         Supplier $supplier
     ) {
 
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDACIONES
+        |--------------------------------------------------------------------------
+        */
+
         $request->validate([
 
-            'name' => 'required',
-            'phone' => 'nullable',
-            'email' => 'nullable|email',
-            'address' => 'nullable',
+            'name' => 'required|string|max:255',
+
+            'phone' => 'nullable|string|max:255',
+
+            'email' => 'nullable|email|max:255',
+
+            'address' => 'nullable|string',
 
         ]);
 
-        $supplier->update($request->all());
+        /*
+        |--------------------------------------------------------------------------
+        | ACTUALIZAR
+        |--------------------------------------------------------------------------
+        */
+
+        $supplier->update([
+
+            'name' => $request->name,
+
+            'phone' => $request->phone,
+
+            'email' => $request->email,
+
+            'address' => $request->address,
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | REDIRECCIONAR
+        |--------------------------------------------------------------------------
+        */
 
         return redirect()
             ->route('suppliers.index')
             ->with(
                 'success',
-                'Proveedor actualizado'
+                'Proveedor actualizado correctamente'
             );
     }
 
     /*
     |--------------------------------------------------------------------------
-    | DELETE
+    | ELIMINAR PROVEEDOR
     |--------------------------------------------------------------------------
     */
 
     public function destroy(Supplier $supplier)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | ELIMINAR
+        |--------------------------------------------------------------------------
+        */
+
         $supplier->delete();
 
-        return back()->with(
-            'success',
-            'Proveedor eliminado'
-        );
+        /*
+        |--------------------------------------------------------------------------
+        | REDIRECCIONAR
+        |--------------------------------------------------------------------------
+        */
+
+        return redirect()
+            ->route('suppliers.index')
+            ->with(
+                'success',
+                'Proveedor eliminado correctamente'
+            );
     }
 }

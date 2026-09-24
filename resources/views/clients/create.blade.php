@@ -9,45 +9,7 @@
 
     @csrf
 
-    <div class="mb-3">
-
-        <label>Nombre</label>
-
-        <input type="text"
-               name="name"
-               class="form-control">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Email</label>
-
-        <input type="email"
-               name="email"
-               class="form-control">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Teléfono</label>
-
-        <input type="text"
-               name="phone"
-               class="form-control">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Dirección</label>
-
-        <input type="text"
-               name="address"
-               class="form-control">
-
-    </div>
+    @include('clients._form')
 
     <button class="btn btn-success">
 

@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| CONTROLADORES
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClientController;
@@ -11,6 +17,12 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KardexController;
+
+/*
+|--------------------------------------------------------------------------
+| MODELOS
+|--------------------------------------------------------------------------
+*/
 
 use App\Models\Product;
 use App\Models\Sale;
@@ -23,13 +35,13 @@ use App\Models\Sale;
 
 Route::get('/', function () {
 
-    return redirect()->route('dashboard');
+    return view('welcome');
 
-});
+})->name('home');
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS PROTEGIDAS
+| RUTAS AUTENTICADAS
 |--------------------------------------------------------------------------
 */
 
@@ -42,6 +54,12 @@ Route::middleware('auth')->group(function () {
     */
 
     Route::get('/dashboard', function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | ESTADÍSTICAS
+        |--------------------------------------------------------------------------
+        */
 
         $totalProductos = Product::count();
 
@@ -57,6 +75,12 @@ Route::middleware('auth')->group(function () {
             'stock_minimo'
         )->count();
 
+        /*
+        |--------------------------------------------------------------------------
+        | PRODUCTOS STOCK BAJO
+        |--------------------------------------------------------------------------
+        */
+
         $productosStockBajo = Product::whereColumn(
                 'stock',
                 '<=',
@@ -66,11 +90,29 @@ Route::middleware('auth')->group(function () {
             ->take(5)
             ->get();
 
+        /*
+        |--------------------------------------------------------------------------
+        | ÚLTIMOS PRODUCTOS
+        |--------------------------------------------------------------------------
+        */
+
         $ultimosProductos = Product::latest()
             ->take(5)
             ->get();
 
+        /*
+        |--------------------------------------------------------------------------
+        | VENTAS
+        |--------------------------------------------------------------------------
+        */
+
         $ventasTotales = Sale::sum('total');
+
+        /*
+        |--------------------------------------------------------------------------
+        | PRODUCTOS MÁS VENDIDOS
+        |--------------------------------------------------------------------------
+        */
 
         $ventasPorProducto = Sale::with('product')
             ->selectRaw(
@@ -80,6 +122,12 @@ Route::middleware('auth')->group(function () {
             ->orderByDesc('total_vendido')
             ->take(5)
             ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | VISTA
+        |--------------------------------------------------------------------------
+        */
 
         return view(
             'dashboard',
@@ -181,6 +229,17 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
+    | FACTURA ELECTRÓNICA (MATIAS API)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/sales/{sale}/electronic-invoice',
+        [SaleController::class, 'sendElectronicInvoice']
+    )->name('sales.electronic-invoice');
+
+    /*
+    |--------------------------------------------------------------------------
     | EXPORTAR EXCEL
     |--------------------------------------------------------------------------
     */
@@ -225,26 +284,11 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | LOGS SOLO ADMIN
-    |--------------------------------------------------------------------------
-    */
-
-    Route::middleware('admin')->group(function () {
-
-        Route::get(
-            '/logs',
-            [LogController::class, 'index']
-        )->name('logs.index');
-
-    });
-
 });
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ONLY
+| SOLO ADMIN
 |--------------------------------------------------------------------------
 */
 
@@ -252,6 +296,17 @@ Route::middleware([
     'auth',
     'admin'
 ])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOGS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/logs',
+        [LogController::class, 'index']
+    )->name('logs.index');
 
     /*
     |--------------------------------------------------------------------------
@@ -306,4 +361,4 @@ Route::middleware([
 |--------------------------------------------------------------------------
 */
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

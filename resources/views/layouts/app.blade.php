@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>FerreSoft ERP</title>
+    <title>FerreSoft</title>
 
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -34,14 +34,20 @@
 
         :root{
 
-            --bg-main:#f4f6f9;
+            --bg-main:#f1f5f9;
             --bg-card:#ffffff;
-            --bg-sidebar:#111827;
+            --bg-sidebar:#0f172a;
 
             --text-main:#111827;
-            --text-muted:#6b7280;
+            --text-muted:#64748b;
 
-            --border-color:#e5e7eb;
+            --border-color:#e2e8f0;
+
+            --primary:#2563eb;
+
+            --success:#22c55e;
+
+            --danger:#ef4444;
 
         }
 
@@ -53,14 +59,28 @@
 
         body.dark-mode{
 
-            --bg-main:#0f172a;
-            --bg-card:#1e293b;
-            --bg-sidebar:#020617;
+            --bg-main:#020617;
+            --bg-card:#0f172a;
+            --bg-sidebar:#000814;
 
             --text-main:#f8fafc;
             --text-muted:#cbd5e1;
 
-            --border-color:#334155;
+            --border-color:#1e293b;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESET
+        |--------------------------------------------------------------------------
+        */
+
+        *{
+
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
 
         }
 
@@ -76,9 +96,13 @@
 
             color:var(--text-main);
 
+            min-height:100vh;
+
             overflow-x:hidden;
 
             transition:.3s ease;
+
+            font-family:'Segoe UI',sans-serif;
 
         }
 
@@ -101,13 +125,14 @@
             display:flex;
 
             align-items:center;
+
             justify-content:center;
 
         }
 
         body.dark-mode #loader{
 
-            background:#0f172a;
+            background:#020617;
 
         }
 
@@ -121,7 +146,7 @@
 
             width:260px;
 
-            min-height:100vh;
+            height:100vh;
 
             background:var(--bg-sidebar);
 
@@ -130,21 +155,45 @@
             top:0;
             left:0;
 
-            padding:25px 20px;
-
             z-index:1000;
+
+            padding:25px 18px;
 
             overflow-y:auto;
 
             transition:.3s ease;
 
+            display:flex;
+
+            flex-direction:column;
+
         }
+
+        .sidebar::-webkit-scrollbar{
+
+            width:5px;
+
+        }
+
+        .sidebar::-webkit-scrollbar-thumb{
+
+            background:#334155;
+
+            border-radius:20px;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGO
+        |--------------------------------------------------------------------------
+        */
 
         .sidebar-logo{
 
             text-align:center;
 
-            margin-bottom:30px;
+            margin-bottom:35px;
 
         }
 
@@ -154,23 +203,49 @@
 
             font-weight:800;
 
+            margin-bottom:5px;
+
         }
+
+        .sidebar-logo small{
+
+            color:#94a3b8;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIDEBAR LINKS
+        |--------------------------------------------------------------------------
+        */
 
         .sidebar-link{
 
-            border-radius:12px;
+            display:flex;
+
+            align-items:center;
 
             padding:12px 15px;
 
-            transition:.3s ease;
+            border-radius:14px;
 
             font-weight:500;
+
+            color:#fff !important;
+
+            transition:.3s ease;
+
+        }
+
+        .sidebar-link i{
+
+            font-size:1rem;
 
         }
 
         .sidebar-link:hover{
 
-            background:rgba(255,255,255,.1);
+            background:rgba(255,255,255,.08);
 
             transform:translateX(5px);
 
@@ -178,15 +253,15 @@
 
         .sidebar-link.active{
 
-            background:#2563eb;
+            background:var(--primary);
 
-            box-shadow:0 4px 10px rgba(37,99,235,.3);
+            box-shadow:0 5px 15px rgba(37,99,235,.35);
 
         }
 
         /*
         |--------------------------------------------------------------------------
-        | MAIN
+        | MAIN CONTENT
         |--------------------------------------------------------------------------
         */
 
@@ -198,7 +273,23 @@
 
             min-height:100vh;
 
-            padding:30px;
+            display:flex;
+
+            flex-direction:column;
+
+            padding:25px;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONTENT WRAPPER
+        |--------------------------------------------------------------------------
+        */
+
+        .content-wrapper{
+
+            flex:1;
 
         }
 
@@ -212,15 +303,17 @@
 
             background:var(--bg-card);
 
-            border-radius:20px;
+            border:1px solid var(--border-color);
 
-            padding:20px;
+            border-radius:22px;
+
+            padding:20px 25px;
 
         }
 
         /*
         |--------------------------------------------------------------------------
-        | CARD
+        | CARDS
         |--------------------------------------------------------------------------
         */
 
@@ -234,11 +327,13 @@
 
             border-radius:20px;
 
+            overflow:hidden;
+
         }
 
         /*
         |--------------------------------------------------------------------------
-        | TABLE
+        | TABLES
         |--------------------------------------------------------------------------
         */
 
@@ -246,11 +341,39 @@
 
             color:var(--text-main);
 
+            margin:0;
+
+        }
+
+        .table thead{
+
+            background:#111827;
+
+            color:#fff;
+
+        }
+
+        .table thead th{
+
+            padding:18px;
+
+            border:none;
+
+            font-size:14px;
+
+        }
+
+        .table tbody td{
+
+            padding:18px;
+
+            vertical-align:middle;
+
         }
 
         /*
         |--------------------------------------------------------------------------
-        | INPUTS
+        | FORMS
         |--------------------------------------------------------------------------
         */
 
@@ -263,6 +386,10 @@
 
             border:1px solid var(--border-color);
 
+            border-radius:12px;
+
+            padding:12px;
+
         }
 
         .form-control:focus,
@@ -272,7 +399,7 @@
 
             color:var(--text-main);
 
-            border-color:#2563eb;
+            border-color:var(--primary);
 
             box-shadow:none;
 
@@ -280,7 +407,89 @@
 
         /*
         |--------------------------------------------------------------------------
-        | MOBILE
+        | BUTTONS
+        |--------------------------------------------------------------------------
+        */
+
+        .btn{
+
+            border-radius:12px;
+
+            font-weight:500;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ALERTS
+        |--------------------------------------------------------------------------
+        */
+
+        .alert{
+
+            border:none;
+
+            border-radius:15px;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | USER BOX
+        |--------------------------------------------------------------------------
+        */
+
+        .sidebar-footer{
+
+            margin-top:auto;
+
+            padding-top:20px;
+
+        }
+
+        .user-box{
+
+            background:rgba(255,255,255,.05);
+
+            padding:15px;
+
+            border-radius:15px;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FOOTER
+        |--------------------------------------------------------------------------
+        */
+
+        .footer{
+
+            margin-top:40px;
+
+            background:#081028;
+
+            border-radius:25px 25px 0 0;
+
+            overflow:hidden;
+
+        }
+
+        .footer a{
+
+            transition:.3s ease;
+
+        }
+
+        .footer a:hover{
+
+            opacity:.7;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOBILE TOGGLE
         |--------------------------------------------------------------------------
         */
 
@@ -367,30 +576,25 @@
 
 <!-- SIDEBAR -->
 <aside id="sidebar"
-       class="sidebar shadow-lg d-flex flex-column">
+       class="sidebar shadow-lg">
 
     <!-- LOGO -->
     <div class="sidebar-logo">
 
-        <h2>🏪 FerreSoft</h2>
+        <h2>FerreSoft</h2>
 
-        <small class="text-light">
-
-            Sistema ERP
-
-        </small>
+        <small>Sistema Administrativo</small>
 
     </div>
 
     <!-- MENU -->
-    <ul class="nav flex-column gap-2 flex-grow-1">
+    <ul class="nav flex-column gap-2">
 
         <!-- DASHBOARD -->
         <li class="nav-item">
 
             <a href="{{ route('dashboard') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
 
                 <i class="bi bi-speedometer2 me-2"></i>
 
@@ -401,11 +605,12 @@
         </li>
 
         <!-- PRODUCTOS -->
+        @if(in_array(Auth::user()->role,['admin','operario']))
+
         <li class="nav-item">
 
             <a href="{{ route('products.index') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('products.*') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
 
                 <i class="bi bi-box-seam me-2"></i>
 
@@ -415,12 +620,15 @@
 
         </li>
 
+        @endif
+
         <!-- CLIENTES -->
+        @if(in_array(Auth::user()->role,['admin','vendedor']))
+
         <li class="nav-item">
 
             <a href="{{ route('clients.index') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('clients.*') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('clients.*') ? 'active' : '' }}">
 
                 <i class="bi bi-people me-2"></i>
 
@@ -431,11 +639,12 @@
         </li>
 
         <!-- PROVEEDORES -->
+        @if(in_array(Auth::user()->role,['admin','operario']))
+
         <li class="nav-item">
 
             <a href="{{ route('suppliers.index') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
 
                 <i class="bi bi-truck me-2"></i>
 
@@ -445,12 +654,18 @@
 
         </li>
 
-        <!-- FACTURACIÓN -->
+        @endif
+
+
+        @endif
+
+        <!-- FACTURACION -->
+        @if(in_array(Auth::user()->role,['admin','vendedor']))
+
         <li class="nav-item">
 
             <a href="{{ route('sales.index') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('sales.*') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
 
                 <i class="bi bi-receipt me-2"></i>
 
@@ -460,12 +675,15 @@
 
         </li>
 
+        @endif
+
         <!-- REPORTES -->
+        @if(in_array(Auth::user()->role,['admin','contador']))
+
         <li class="nav-item">
 
             <a href="{{ route('reports.index') }}"
-               class="nav-link text-white sidebar-link
-               {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+               class="nav-link sidebar-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
 
                 <i class="bi bi-bar-chart-line me-2"></i>
 
@@ -474,116 +692,90 @@
             </a>
 
         </li>
-    
+
+        @endif
 
         <!-- KARDEX -->
-<li class="nav-item">
+        @if(in_array(Auth::user()->role,['admin','operario']))
 
-    <a href="{{ route('kardex.index') }}"
-       class="nav-link text-white sidebar-link
-       {{ request()->routeIs('kardex.*') ? 'active' : '' }}">
+        <li class="nav-item">
 
-        <i class="bi bi-journal-text me-2"></i>
+            <a href="{{ route('kardex.index') }}"
+               class="nav-link sidebar-link {{ request()->routeIs('kardex.*') ? 'active' : '' }}">
 
-        Kardex
+                <i class="bi bi-journal-text me-2"></i>
 
-    </a>
+                Kardex
 
-</li>
+            </a>
 
+        </li>
 
+        @endif
 
-        <!-- SOLO ADMIN -->
-        @auth
+        <!-- ADMIN -->
+        @if(Auth::user()->role === 'admin')
 
-            @if(Auth::user()->role === 'admin')
+        <li class="nav-item mt-3">
 
-                <!-- LOGS -->
-                <li class="nav-item">
+            <small class="text-uppercase text-secondary fw-bold ms-2">
 
-                    <a href="{{ route('logs.index') }}"
-                       class="nav-link text-white sidebar-link
-                       {{ request()->routeIs('logs.*') ? 'active' : '' }}">
+                Administración
 
-                        <i class="bi bi-clock-history me-2"></i>
+            </small>
 
-                        Logs
+        </li>
 
-                    </a>
+        <li class="nav-item">
 
-                </li>
+            <a href="{{ route('users.index') }}"
+               class="nav-link sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
 
-                <!-- TITULO -->
-                <li class="nav-item mt-4">
+                <i class="bi bi-person-gear me-2"></i>
 
-                    <small class="text-uppercase text-secondary fw-bold ms-2">
+                Usuarios
 
-                        Administración
+            </a>
 
-                    </small>
+        </li>
 
-                </li>
+        <li class="nav-item">
 
-                <!-- USUARIOS -->
-                <li class="nav-item">
+            <a href="{{ route('logs.index') }}"
+               class="nav-link sidebar-link {{ request()->routeIs('logs.*') ? 'active' : '' }}">
 
-                    <a href="{{ route('users.index') }}"
-                       class="nav-link text-white sidebar-link
-                       {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                <i class="bi bi-clock-history me-2"></i>
 
-                        <i class="bi bi-person-gear me-2"></i>
+                Logs
 
-                        Usuarios
+            </a>
 
-                    </a>
+        </li>
 
-                </li>
-
-                <!-- CREAR EMPLEADO -->
-                <li class="nav-item">
-
-                    <a href="{{ route('users.create') }}"
-                       class="nav-link text-white sidebar-link
-                       {{ request()->routeIs('users.create') ? 'active' : '' }}">
-
-                        <i class="bi bi-person-plus me-2"></i>
-
-                        Crear empleado
-
-                    </a>
-
-                </li>
-
-            @endif
-
-        @endauth
+        @endif
 
     </ul>
 
-    <!-- FOOTER -->
-    <div class="mt-4">
+    <!-- FOOTER SIDEBAR -->
+    <div class="sidebar-footer">
 
         <hr class="border-secondary">
 
-        @auth
+        <div class="user-box text-center text-light mb-3">
 
-            <div class="text-center mb-3 text-light">
+            <div class="fw-bold">
 
-                <div class="fw-bold">
-
-                    👤 {{ Auth::user()->name }}
-
-                </div>
-
-                <small class="text-secondary text-uppercase">
-
-                    {{ Auth::user()->role }}
-
-                </small>
+                👤 {{ Auth::user()->name }}
 
             </div>
 
-        @endauth
+            <small class="text-secondary text-uppercase">
+
+                {{ Auth::user()->role }}
+
+            </small>
+
+        </div>
 
         <!-- DARK MODE -->
         <button onclick="toggleDarkMode()"
@@ -594,24 +786,20 @@
         </button>
 
         <!-- LOGOUT -->
-        @auth
+        <form method="POST"
+              action="{{ route('logout') }}">
 
-            <form method="POST"
-                  action="{{ route('logout') }}">
+            @csrf
 
-                @csrf
+            <button class="btn btn-danger w-100 py-2">
 
-                <button class="btn btn-danger w-100 rounded-3">
+                <i class="bi bi-box-arrow-right me-1"></i>
 
-                    <i class="bi bi-box-arrow-right"></i>
+                Cerrar sesión
 
-                    Cerrar sesión
+            </button>
 
-                </button>
-
-            </form>
-
-        @endauth
+        </form>
 
     </div>
 
@@ -620,112 +808,230 @@
 <!-- MAIN -->
 <main class="main-content">
 
-    <!-- TOPBAR -->
-    <div class="topbar shadow-sm mb-4">
+    <!-- CONTENT -->
+    <div class="content-wrapper">
 
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <!-- TOPBAR -->
+        <div class="topbar shadow-sm mb-4">
 
-            <div>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-                <h4 class="fw-bold mb-1">
+                <div>
 
-                    🚀 FerreSoft ERP
+                    <h3 class="fw-bold mb-1">
 
-                </h4>
+                        FerreSoft
 
-                <small class="text-muted">
+                    </h3>
 
-                    Panel administrativo
+                    <small class="text-muted">
 
-                </small>
-
-            </div>
-
-            @auth
-
-            <div class="d-flex align-items-center gap-4">
-
-                <div class="text-center">
-
-                    <small class="text-muted d-block">
-
-                        Hora actual
+                        Panel Administrativo
 
                     </small>
 
-                    <strong id="clock">
-
-                        --:--
-
-                    </strong>
-
                 </div>
 
-                <div class="text-center">
+                <div class="d-flex align-items-center gap-4">
 
-                    <small class="text-muted d-block">
+                    <div class="text-center">
 
-                        Usuario
+                        <small class="text-muted d-block">
 
-                    </small>
+                            Hora actual
 
-                    <strong>
+                        </small>
 
-                        {{ Auth::user()->name }}
+                        <strong id="clock">
 
-                    </strong>
+                            --:--
+
+                        </strong>
+
+                    </div>
+
+                    <div class="text-center">
+
+                        <small class="text-muted d-block">
+
+                            Usuario
+
+                        </small>
+
+                        <strong>
+
+                            {{ Auth::user()->name }}
+
+                        </strong>
+
+                    </div>
 
                 </div>
 
             </div>
-
-            @endauth
 
         </div>
+
+        <!-- ALERTAS -->
+        @if(session('success'))
+
+            <div class="alert alert-success shadow-sm">
+
+                ✅ {{ session('success') }}
+
+            </div>
+
+        @endif
+
+        @if(session('error'))
+
+            <div class="alert alert-danger shadow-sm">
+
+                ❌ {{ session('error') }}
+
+            </div>
+
+        @endif
+
+        <!-- CONTENIDO -->
+        @yield('content')
 
     </div>
 
-    <!-- ALERTAS -->
-    @if(session('success'))
-
-        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0">
-
-            ✅ {{ session('success') }}
-
-            <button class="btn-close"
-                    data-bs-dismiss="alert"></button>
-
-        </div>
-
-    @endif
-
-    @if(session('error'))
-
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0">
-
-            ❌ {{ session('error') }}
-
-            <button class="btn-close"
-                    data-bs-dismiss="alert"></button>
-
-        </div>
-
-    @endif
-
-    <!-- CONTENIDO -->
-    @yield('content')
-
     <!-- FOOTER -->
-    <footer class="text-center mt-5">
+    <footer class="footer text-white">
 
-        <hr>
+        <div class="container-fluid p-5">
 
-        <p>
+            <div class="row">
 
-            © {{ date('Y') }} FerreSoft ERP |
-            Laravel 12 + Bootstrap 5
+                <div class="col-lg-6 mb-4">
 
-        </p>
+                    <h4 class="fw-bold mb-3">
+
+                        Sobre Nosotros
+
+                    </h4>
+
+                    <p class="text-light small">
+
+                        FerreSoft es un sistema integral de gestión
+                        diseñado para ferreterías y negocios de productos metálicos.
+
+                    </p>
+
+                    <small class="text-secondary">
+
+                        Versión v2.1
+
+                    </small>
+
+                </div>
+
+                <div class="col-lg-3 mb-4">
+
+                    <h4 class="fw-bold mb-3">
+
+                        Contacto
+
+                    </h4>
+
+                    <p>
+
+                        <i class="bi bi-telephone me-2"></i>
+
+                        +57 300 000 0000
+
+                    </p>
+
+                    <p>
+
+                        <i class="bi bi-envelope me-2"></i>
+
+                        contacto@ferresoft.com
+
+                    </p>
+
+                    <p>
+
+                        <i class="bi bi-geo-alt me-2"></i>
+
+                        Santiago de Cali
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-3 mb-4">
+
+                    <h4 class="fw-bold mb-3">
+
+                        Síguenos
+
+                    </h4>
+
+                    <div class="d-flex gap-3 fs-4">
+
+                        <a href="#" class="text-white">
+
+                            <i class="bi bi-facebook"></i>
+
+                        </a>
+
+                        <a href="#" class="text-white">
+
+                            <i class="bi bi-instagram"></i>
+
+                        </a>
+
+                        <a href="#" class="text-white">
+
+                            <i class="bi bi-twitter-x"></i>
+
+                        </a>
+
+                        <a href="#" class="text-white">
+
+                            <i class="bi bi-linkedin"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="border-top border-secondary px-5 py-3 d-flex justify-content-between flex-wrap">
+
+            <div class="small text-light">
+
+                © {{ date('Y') }} FerreSoft.
+                Todos los derechos reservados.
+
+            </div>
+
+            <div class="small">
+
+                <a href="#"
+                   class="text-light text-decoration-none me-3">
+
+                    Términos
+
+                </a>
+
+                <a href="#"
+                   class="text-light text-decoration-none">
+
+                    Privacidad
+
+                </a>
+
+            </div>
+
+        </div>
 
     </footer>
 
@@ -744,8 +1050,7 @@
 
     window.addEventListener('load', () => {
 
-        document.getElementById('loader')
-            .style.display = 'none';
+        document.getElementById('loader').style.display = 'none';
 
     });
 
@@ -759,8 +1064,8 @@
 
         const now = new Date();
 
-        document.getElementById('clock')
-            .innerHTML = now.toLocaleTimeString();
+        document.getElementById('clock').innerHTML =
+            now.toLocaleTimeString();
 
     }
 
@@ -795,6 +1100,7 @@
             .forEach(alert => {
 
                 alert.style.transition = '.5s';
+
                 alert.style.opacity = '0';
 
                 setTimeout(() => {
@@ -825,10 +1131,7 @@
 
         if(document.body.classList.contains('dark-mode')){
 
-            localStorage.setItem(
-                'darkMode',
-                'enabled'
-            );
+            localStorage.setItem('darkMode','enabled');
 
         }else{
 

@@ -135,7 +135,7 @@
 
         <h1>
 
-            🏪 FerreSoft ERP
+            FerreSoft
 
         </h1>
 
@@ -269,7 +269,7 @@
 
     <div class="footer">
 
-        Gracias por confiar en FerreSoft ERP 🚀
+        Gracias por confiar en FerreSoft 
 
         <br><br>
 

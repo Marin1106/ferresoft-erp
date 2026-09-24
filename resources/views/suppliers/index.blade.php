@@ -2,114 +2,178 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid">
 
-    <div>
+    {{-- HEADER --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2 class="fw-bold">
+        <div>
 
-            🚚 Proveedores
+            <h2 class="fw-bold mb-1">
 
-        </h2>
+                🚚 Proveedores
 
-        <p class="text-muted">
+            </h2>
 
-            Gestión de proveedores
+            <p class="text-muted mb-0">
 
-        </p>
+                Gestión completa de proveedores
+
+            </p>
+
+        </div>
+
+        <a href="{{ route('suppliers.create') }}"
+           class="btn btn-primary shadow-sm">
+
+            ➕ Nuevo proveedor
+
+        </a>
 
     </div>
 
-    <a href="{{ route('suppliers.create') }}"
-       class="btn btn-primary">
+    {{-- ALERTA --}}
+    @if(session('success'))
 
-        ➕ Nuevo proveedor
+        <div class="alert alert-success shadow-sm border-0">
 
-    </a>
+            {{ session('success') }}
 
-</div>
+        </div>
 
-<div class="card shadow-sm border-0">
+    @endif
 
-    <div class="card-body">
+    {{-- CARD --}}
+    <div class="card shadow-sm border-0">
 
-        <div class="table-responsive">
+        <div class="card-body">
 
-            <table class="table align-middle">
+            <div class="table-responsive">
 
-                <thead>
+                <table class="table table-hover align-middle">
 
-                    <tr>
-
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Dirección</th>
-                        <th>Acciones</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @forelse($suppliers as $supplier)
+                    <thead class="table-light">
 
                         <tr>
 
-                            <td>{{ $supplier->name }}</td>
+                            <th>#</th>
 
-                            <td>{{ $supplier->phone }}</td>
+                            <th>Nombre</th>
 
-                            <td>{{ $supplier->email }}</td>
+                            <th>Teléfono</th>
 
-                            <td>{{ $supplier->address }}</td>
+                            <th>Email</th>
 
-                            <td class="d-flex gap-2">
+                            <th>Dirección</th>
 
-                                <a href="{{ route('suppliers.edit',$supplier) }}"
-                                   class="btn btn-warning btn-sm">
+                            <th class="text-center">
 
-                                    ✏️
+                                Acciones
 
-                                </a>
-
-                                <form action="{{ route('suppliers.destroy',$supplier) }}"
-                                      method="POST">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button class="btn btn-danger btn-sm">
-
-                                        🗑️
-
-                                    </button>
-
-                                </form>
-
-                            </td>
+                            </th>
 
                         </tr>
 
-                    @empty
+                    </thead>
 
-                        <tr>
+                    <tbody>
 
-                            <td colspan="5"
-                                class="text-center">
+                        @forelse($suppliers as $supplier)
 
-                                No hay proveedores
+                            <tr>
 
-                            </td>
+                                <td>
 
-                        </tr>
+                                    {{ $supplier->id }}
 
-                    @endforelse
+                                </td>
 
-                </tbody>
+                                <td class="fw-semibold">
 
-            </table>
+                                    {{ $supplier->name }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ $supplier->phone ?? '—' }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ $supplier->email ?? '—' }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ $supplier->address ?? '—' }}
+
+                                </td>
+
+                                <td>
+
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        {{-- EDITAR --}}
+                                        <a href="{{ route('suppliers.edit', $supplier->id) }}"
+                                           class="btn btn-warning btn-sm">
+
+                                            ✏️ Editar
+
+                                        </a>
+
+                                        {{-- ELIMINAR --}}
+                                        <form action="{{ route('suppliers.destroy', $supplier->id) }}"
+                                              method="POST">
+
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('¿Eliminar proveedor?')">
+
+                                                🗑️ Eliminar
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="6"
+                                    class="text-center py-4 text-muted">
+
+                                    No hay proveedores registrados
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {{-- PAGINACIÓN --}}
+            <div class="mt-3">
+
+                {{ $suppliers->links() }}
+
+            </div>
 
         </div>
 

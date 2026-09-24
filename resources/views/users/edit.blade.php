@@ -2,117 +2,205 @@
 
 @section('content')
 
-<div class="card shadow-sm border-0">
+<div class="container-fluid">
 
-    <div class="card-body">
+    <div class="card shadow-sm border-0 rounded-4">
 
-        <h3 class="fw-bold mb-4">
+        <!-- HEADER -->
+        <div class="card-header bg-warning text-dark py-3 rounded-top-4">
 
-            ✏️ Editar Usuario
+            <h3 class="fw-bold mb-0">
 
-        </h3>
+                ✏️ Editar Usuario
 
-        <form method="POST"
-              action="{{ route('users.update',$user) }}">
+            </h3>
 
-            @csrf
-            @method('PUT')
+        </div>
 
-            <div class="mb-3">
+        <div class="card-body p-4">
 
-                <label class="form-label">
+            <!-- ERRORES -->
+            @if ($errors->any())
 
-                    Nombre
+                <div class="alert alert-danger rounded-3">
 
-                </label>
+                    <ul class="mb-0">
 
-                <input type="text"
-                       name="name"
-                       value="{{ $user->name }}"
-                       class="form-control">
+                        @foreach ($errors->all() as $error)
 
-            </div>
+                            <li>{{ $error }}</li>
 
-            <div class="mb-3">
+                        @endforeach
 
-                <label class="form-label">
+                    </ul>
 
-                    Email
+                </div>
 
-                </label>
+            @endif
 
-                <input type="email"
-                       name="email"
-                       value="{{ $user->email }}"
-                       class="form-control">
+            <!-- FORM -->
+            <form method="POST"
+                  action="{{ route('users.update', $user) }}">
 
-            </div>
+                @csrf
+                @method('PUT')
 
-            <div class="mb-3">
+                <div class="row g-4">
 
-                <label class="form-label">
+                    <!-- NOMBRE -->
+                    <div class="col-md-6">
 
-                    Rol
+                        <label class="form-label fw-semibold">
 
-                </label>
+                            👤 Nombre Completo
 
-                <select name="role"
-                        class="form-select">
+                        </label>
 
-                    <option value="admin"
-                        {{ $user->role == 'admin' ? 'selected' : '' }}>
+                        <input type="text"
+                               name="name"
+                               value="{{ old('name', $user->name) }}"
+                               class="form-control rounded-3"
+                               required>
 
-                        Admin
+                    </div>
 
-                    </option>
+                    <!-- EMAIL -->
+                    <div class="col-md-6">
 
-                    <option value="empleado"
-                        {{ $user->role == 'empleado' ? 'selected' : '' }}>
+                        <label class="form-label fw-semibold">
 
-                        Empleado
+                            📧 Correo Electrónico
 
-                    </option>
+                        </label>
 
-                </select>
+                        <input type="email"
+                               name="email"
+                               value="{{ old('email', $user->email) }}"
+                               class="form-control rounded-3"
+                               required>
 
-            </div>
+                    </div>
 
-            <div class="mb-4">
+                    <!-- PASSWORD -->
+                    <div class="col-md-6">
 
-                <label class="form-label">
+                        <label class="form-label fw-semibold">
 
-                    Estado
+                            🔑 Nueva Contraseña
 
-                </label>
+                        </label>
 
-                <select name="status"
-                        class="form-select">
+                        <input type="password"
+                               name="password"
+                               class="form-control rounded-3">
 
-                    <option value="activo"
-                        {{ $user->status == 'activo' ? 'selected' : '' }}>
+                        <small class="text-muted">
 
-                        Activo
+                            Déjalo vacío si no deseas cambiarla
 
-                    </option>
+                        </small>
 
-                    <option value="inactivo"
-                        {{ $user->status == 'inactivo' ? 'selected' : '' }}>
+                    </div>
 
-                        Inactivo
+                    <!-- ROL -->
+                    <div class="col-md-3">
 
-                    </option>
+                        <label class="form-label fw-semibold">
 
-                </select>
+                            🛡️ Rol
 
-            </div>
+                        </label>
 
-            <button class="btn btn-primary">
+                        <select name="role"
+                                class="form-select rounded-3"
+                                required>
 
-                Guardar cambios
+                            <option value="admin"
+                                {{ $user->role == 'admin' ? 'selected' : '' }}>
 
-            </button>
+                                Administrador
 
-        </form>
+                            </option>
+
+                            <option value="vendedor"
+                                {{ $user->role == 'vendedor' ? 'selected' : '' }}>
+
+                                Vendedor
+
+                            </option>
+
+                            <option value="contador"
+                                {{ $user->role == 'contador' ? 'selected' : '' }}>
+
+                                Contador
+
+                            </option>
+
+                            <option value="operario"
+                                {{ $user->role == 'operario' ? 'selected' : '' }}>
+
+                                Operario
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- ESTADO -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold">
+
+                            📌 Estado
+
+                        </label>
+
+                        <select name="status"
+                                class="form-select rounded-3"
+                                required>
+
+                            <option value="activo"
+                                {{ $user->status == 'activo' ? 'selected' : '' }}>
+
+                                🟢 Activo
+
+                            </option>
+
+                            <option value="inactivo"
+                                {{ $user->status == 'inactivo' ? 'selected' : '' }}>
+
+                                🔴 Inactivo
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- BOTONES -->
+                <div class="mt-5 d-flex gap-3">
+
+                    <button class="btn btn-warning px-4 rounded-3 fw-semibold">
+
+                        💾 Guardar Cambios
+
+                    </button>
+
+                    <a href="{{ route('users.index') }}"
+                       class="btn btn-secondary px-4 rounded-3">
+
+                        ↩ Volver
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 

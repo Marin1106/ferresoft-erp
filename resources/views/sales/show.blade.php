@@ -171,6 +171,123 @@
 
     </div>
 
+    <!-- FACTURA ELECTRÓNICA -->
+    <div class="card border-0 shadow-sm mt-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+
+                <h5 class="fw-bold mb-0">
+
+                    🧾 Factura Electrónica DIAN
+
+                </h5>
+
+                @php
+                    $feBadge = [
+                        'aceptada'  => 'success',
+                        'pendiente' => 'warning text-dark',
+                        'rechazada' => 'danger',
+                        'error'     => 'danger',
+                    ][$sale->fe_status] ?? 'secondary';
+                @endphp
+
+                <span class="badge bg-{{ $feBadge }} fs-6">
+
+                    {{ $sale->fe_status ? ucfirst($sale->fe_status) : 'No enviada' }}
+
+                </span>
+
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <strong>Número:</strong>
+
+                    {{ $sale->fe_full_number ?? '—' }}
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <strong>Último envío:</strong>
+
+                    {{ $sale->fe_sent_at?->format('d/m/Y H:i') ?? '—' }}
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <strong>Correo cliente:</strong>
+
+                    {{ $sale->client->email }}
+
+                </div>
+
+                @if ($sale->fe_cufe)
+
+                    <div class="col-12">
+
+                        <strong>CUFE:</strong>
+
+                        <code class="text-break">{{ $sale->fe_cufe }}</code>
+
+                    </div>
+
+                @endif
+
+                @if ($sale->fe_message)
+
+                    <div class="col-12">
+
+                        <div class="alert alert-{{ $sale->fe_status === 'aceptada' ? 'success' : 'warning' }} mb-0">
+
+                            {{ $sale->fe_message }}
+
+                        </div>
+
+                    </div>
+
+                @endif
+
+            </div>
+
+            @if ($sale->fe_status !== 'aceptada' && $sale->status !== 'Cancelada')
+
+                <form action="{{ route('sales.electronic-invoice', $sale) }}"
+                      method="POST"
+                      class="mt-3">
+
+                    @csrf
+
+                    <button class="btn btn-primary">
+
+                        {{ $sale->fe_status ? 'Reenviar a la DIAN' : 'Enviar a la DIAN' }}
+
+                    </button>
+
+                    @if ($sale->client->missingElectronicInvoiceFields())
+
+                        <a href="{{ route('clients.edit', $sale->client) }}"
+                           class="btn btn-outline-secondary ms-2">
+
+                            Completar datos del cliente
+
+                        </a>
+
+                    @endif
+
+                </form>
+
+            @endif
+
+        </div>
+
+    </div>
+
 </div>
 
 @endsection

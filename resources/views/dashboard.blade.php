@@ -14,7 +14,7 @@
 
             <h1 class="fw-bold text-dark">
 
-                📊 Dashboard ERP
+                📊 Dashboard
 
             </h1>
 
@@ -555,7 +555,7 @@ new Chart(inventoryCtx, {
 
         datasets: [{
 
-            label: 'Estadísticas ERP',
+            label: 'Estadísticas',
 
             data: [
 

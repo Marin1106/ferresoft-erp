@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Reporte ERP</title>
+    <title>Reporte</title>
 
     <style>
 
@@ -49,7 +49,7 @@
 
 <body>
 
-    <h1>Reporte General ERP</h1>
+    <h1>Reporte General </h1>
 
     <p>
 

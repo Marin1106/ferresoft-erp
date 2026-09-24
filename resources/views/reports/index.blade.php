@@ -11,7 +11,7 @@
 
         <div>
             <h1 class="fw-bold text-dark">
-                📈 Reportes ERP
+                📈 Reportes 
             </h1>
 
             <p class="text-muted mb-0">
@@ -103,7 +103,7 @@
                         </div>
 
                         <div class="fs-1">
-                            🏪
+                            
                         </div>
 
                     </div>
@@ -412,7 +412,7 @@ new Chart(ctx, {
 
         datasets: [{
 
-            label: 'Estadísticas ERP',
+            label: 'Estadísticas',
 
             data: [
                 {{ $ventasTotales }},

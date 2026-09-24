@@ -59,13 +59,15 @@ class User extends Authenticatable
     {
         return match ($this->role) {
 
-            'admin' => 'Administrador',
+            'admin'     => 'Administrador',
 
-            'vendedor' => 'Vendedor',
+            'vendedor'  => 'Vendedor',
 
-            'cliente' => 'Cliente',
+            'contador'  => 'Contador',
 
-            default => 'Usuario',
+            'operario'  => 'Operario',
+
+            default     => 'Usuario',
 
         };
     }
@@ -107,12 +109,23 @@ class User extends Authenticatable
 
     /*
     |--------------------------------------------------------------------------
-    | VALIDAR CLIENTE
+    | VALIDAR CONTADOR
     |--------------------------------------------------------------------------
     */
 
-    public function isCliente()
+    public function isContador()
     {
-        return $this->role === 'cliente';
+        return $this->role === 'contador';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | VALIDAR OPERARIO
+    |--------------------------------------------------------------------------
+    */
+
+    public function isOperario()
+    {
+        return $this->role === 'operario';
     }
 }

@@ -10,49 +10,7 @@
     @csrf
     @method('PUT')
 
-    <div class="mb-3">
-
-        <label>Nombre</label>
-
-        <input type="text"
-               name="name"
-               class="form-control"
-               value="{{ $client->name }}">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Email</label>
-
-        <input type="email"
-               name="email"
-               class="form-control"
-               value="{{ $client->email }}">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Teléfono</label>
-
-        <input type="text"
-               name="phone"
-               class="form-control"
-               value="{{ $client->phone }}">
-
-    </div>
-
-    <div class="mb-3">
-
-        <label>Dirección</label>
-
-        <input type="text"
-               name="address"
-               class="form-control"
-               value="{{ $client->address }}">
-
-    </div>
+    @include('clients._form')
 
     <button class="btn btn-warning">
 

@@ -17,6 +17,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\SalesExport;
 
+use App\Services\Matias\ElectronicInvoiceService;
+
 class SaleController extends Controller
 {
     /*
@@ -111,7 +113,7 @@ class SaleController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function store(Request $request)
+    public function store(Request $request, ElectronicInvoiceService $electronicInvoice)
     {
         /*
         |--------------------------------------------------------------------------
@@ -281,18 +283,62 @@ class SaleController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | FACTURA ELECTRÓNICA (MATIAS API / DIAN)
+        |--------------------------------------------------------------------------
+        | Si la DIAN rechaza o falla la conexión, la venta queda registrada
+        | y la factura se puede reenviar desde el detalle de la venta.
+        */
+
+        $fe = $electronicInvoice->send($sale);
+
+        /*
+        |--------------------------------------------------------------------------
         | REDIRECCIONAR
         |--------------------------------------------------------------------------
         */
 
-        return redirect()
+        $redirect = redirect()
             ->route('sales.index')
             ->with(
 
                 'success',
-                'Venta registrada correctamente'
+                'Venta registrada correctamente' .
+                    ($fe && $fe['ok'] ? '. ' . $fe['message'] : '')
 
             );
+
+        if ($fe && ! $fe['ok']) {
+
+            $redirect->with('error', $fe['message']);
+
+        }
+
+        return $redirect;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | REENVIAR FACTURA ELECTRÓNICA
+    |--------------------------------------------------------------------------
+    */
+
+    public function sendElectronicInvoice(Sale $sale, ElectronicInvoiceService $electronicInvoice)
+    {
+        if (! config('matias.enabled')) {
+
+            return back()->with('error', 'La facturación electrónica está desactivada (MATIAS_ENABLED=false).');
+
+        }
+
+        if ($sale->status === 'Cancelada') {
+
+            return back()->with('error', 'Una venta cancelada no se factura electrónicamente.');
+
+        }
+
+        $fe = $electronicInvoice->send($sale);
+
+        return back()->with($fe['ok'] ? 'success' : 'error', $fe['message']);
     }
 
     /*

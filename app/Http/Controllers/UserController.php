@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -65,7 +63,7 @@ class UserController extends Controller
 
             'password' => 'required|min:6',
 
-            'role' => 'required|in:admin,vendedor,cliente',
+            'role' => 'required|in:admin,vendedor,contador,operario',
 
             'status' => 'required|in:activo,inactivo',
 
@@ -123,7 +121,7 @@ class UserController extends Controller
 
             'email' => 'required|email|unique:users,email,' . $user->id,
 
-            'role' => 'required|in:admin,vendedor,cliente',
+            'role' => 'required|in:admin,vendedor,contador,operario',
 
             'status' => 'required|in:activo,inactivo',
 
